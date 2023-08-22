@@ -1,5 +1,5 @@
 # VRC-OSCStuff
-VRC-OSCStuff is a Python script that integrates with virtual reality platforms using the OSC protocol to create an interactive experience based on the text content of bible.txt. The project interprets the text and triggers various actions such as movement and chatbox input.
+VRC-OSCStuff is a Python script that integrates with VRChat using the OSC protocol to automate stuff based on the text content of bible.txt. The project interprets the text and triggers various actions such as movement and chatbox input.
 
 ## Features
 - Dynamic Text Reading: Reads the bible.txt file and processes its content.
