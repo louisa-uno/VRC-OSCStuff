@@ -1,39 +1,13 @@
-import random
 import threading
 import time
 
-from pythonosc.udp_client import SimpleUDPClient
+import misc
 
-from misc import get_vrchat_port
-
-CLIENT = SimpleUDPClient("127.0.0.1", get_vrchat_port())
+CLIENT = misc.load_client()
 
 file_path = 'bible.txt'  # Replace with your desired file path
 with open(file_path, 'r', encoding='utf-8') as file:
 	text = file.read().replace('\n', '\v')
-
-
-def send_command(command, duration):
-	CLIENT.send_message(command, 1)
-	time.sleep(duration)
-	CLIENT.send_message(command, 0)
-
-
-def lerp(a, b, t):
-	return a + t * (b - a)
-
-
-def smooth_send_command(command, duration, z):
-	j = random.random()
-	fps = 144
-	steps = int(duration * fps)
-	for i in range(steps):
-		t = i / steps  # t varies from 0 to 1 over the duration
-		value = lerp(z, j, t)
-		CLIENT.send_message(command, value)
-		time.sleep(1 / fps)
-	return j
-
 
 current_char = 0
 z = 0
@@ -69,23 +43,22 @@ try:
 		sleep_time = 1.5 if sleep_time < 1.5 else sleep_time
 
 		if chatbox:
-			CLIENT.send_message("/chatbox/input",
-			                    (textprint + stringprint, True, False))
+			misc.send_to_chatbox(textprint + stringprint)
 			CLIENT.send_message("/chatbox/typing", False)
 		if movements:
-			threading.Thread(target=send_command,
+			threading.Thread(target=misc.send_command,
 			                 args=("/input/MoveForward",
 			                       move_forward)).start()
-			threading.Thread(target=send_command,
+			threading.Thread(target=misc.send_command,
 			                 args=("/input/MoveBackward",
 			                       move_backward)).start()
-			threading.Thread(target=send_command,
+			threading.Thread(target=misc.send_command,
 			                 args=("/input/MoveLeft", move_left)).start()
-			threading.Thread(target=send_command,
+			threading.Thread(target=misc.send_command,
 			                 args=("/input/MoveRight", move_right)).start()
 		if eyes:
-			z = smooth_send_command("/tracking/eye/EyesClosedAmount",
-			                        sleep_time, z)
+			z = misc.smooth_send_command("/tracking/eye/EyesClosedAmount",
+			                             sleep_time, z)
 		else:
 			time.sleep(sleep_time)
 except KeyboardInterrupt:
@@ -95,4 +68,4 @@ except KeyboardInterrupt:
 	CLIENT.send_message("/input/MoveLeft", 0)
 	CLIENT.send_message("/input/MoveRight", 0)
 	time.sleep(1.5)
-	CLIENT.send_message("/chatbox/input", ("", True, False))
+	misc.send_to_chatbox("")
