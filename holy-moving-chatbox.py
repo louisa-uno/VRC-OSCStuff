@@ -3,7 +3,8 @@ import time
 import threading
 import random
 
-CLIENT = SimpleUDPClient("127.0.0.1", 9100)
+CLIENT = SimpleUDPClient("127.0.0.1",
+                         int(input("Enter OSC port (default is 9000): ")))
 
 file_path = 'bible.txt'  # Replace with your desired file path
 with open(file_path, 'r', encoding='utf-8') as file:
