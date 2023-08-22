@@ -1,3 +1,4 @@
+import threading
 import time
 
 from pythonosc.udp_client import SimpleUDPClient
@@ -6,14 +7,35 @@ from misc import get_vrchat_port
 
 CLIENT = SimpleUDPClient("127.0.0.1", get_vrchat_port())
 
-try:
-	textprint = input("Enter text to use in the chatbox: ")
-	while True:
-		i = len(textprint)
+textprint = input("Enter initial text to use in the chatbox: ")
+print("Press Ctrl+C to stop the script.")
+while True:
+	if len(textprint) < 144:
 		textprint = "\v" + textprint
-		if len(textprint) >= 144:
+	else:
+		break
+
+
+def listen_for_input():
+	global textprint
+	while True:
+		try:
+			textprint = input("Enter new text: ")
+			while True:
+				if len(textprint) < 144:
+					textprint = "\v" + textprint
+				else:
+					break
+		except EOFError:
+			print("Input thread terminated.")
 			break
 
+
+input_thread = threading.Thread(target=listen_for_input)
+input_thread.daemon = True
+input_thread.start()
+
+try:
 	while True:
 		CLIENT.send_message("/chatbox/input", (textprint, True, False))
 		time.sleep(1.5)

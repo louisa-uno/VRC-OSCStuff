@@ -43,6 +43,9 @@ movements = input("Do you want to use movements osc? (y/n) ")
 movements = True if movements == "y" else False
 eyes = input("Do you want to use eyes osc? (y/n) ")
 eyes = True if eyes == "y" else False
+
+print("Press Ctrl+C to stop the script.")
+
 try:
 	while True:
 		textprint = "ʜᴏʟʏ ᴍᴏᴠɪɴɢ ᴄʜᴀᴛʙᴏx\v"
