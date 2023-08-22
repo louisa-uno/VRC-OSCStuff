@@ -19,3 +19,5 @@ try:
 		time.sleep(1.5)
 except KeyboardInterrupt:
 	print("KeyboardInterrupt has been caught.")
+	time.sleep(1.5)
+	CLIENT.send_message("/chatbox/input", ("", True, False))

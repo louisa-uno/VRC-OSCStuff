@@ -91,3 +91,5 @@ except KeyboardInterrupt:
 	CLIENT.send_message("/input/MoveBackward", 0)
 	CLIENT.send_message("/input/MoveLeft", 0)
 	CLIENT.send_message("/input/MoveRight", 0)
+	time.sleep(1.5)
+	CLIENT.send_message("/chatbox/input", ("", True, False))
