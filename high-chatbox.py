@@ -1,10 +1,10 @@
-from pythonosc.udp_client import SimpleUDPClient
 import time
-import threading
-import random
 
-CLIENT = SimpleUDPClient("127.0.0.1",
-                         int(input("Enter OSC port (default is 9000): ")))
+from pythonosc.udp_client import SimpleUDPClient
+
+from misc import get_vrchat_port
+
+CLIENT = SimpleUDPClient("127.0.0.1", get_vrchat_port())
 
 try:
 	textprint = input("Enter text to use in the chatbox: ")
