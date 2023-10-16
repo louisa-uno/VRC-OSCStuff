@@ -1,2 +1,2 @@
 python-osc==1.8.3
-psutil==5.9.5
+psutil==5.9.6
